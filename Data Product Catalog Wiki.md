@@ -1,378 +1,255 @@
-# Data Product Catalog Wiki
-
-## Overview
-This document describes the structure and governance model for the data product catalog, based on proven industry best practices.
+# Data Product Catalog 
+This data model captures the essential metadata for each data product in a simple, practical format.
 
 ---
 
-## What is a Data Product?
+## Data Product Structure 
 
-A **Data Product** is a well-defined, governed, and discoverable data asset that:
-- Serves specific business purposes
-- Has clear ownership and accountability  
-- Meets defined quality standards
-- Provides reliable access methods
-- Includes comprehensive documentation
+### Core Data Product Entity
 
----
 
-## Catalog Structure
-
-### Core Components
-
-Our data catalog is organized around these main concepts:
-
-```
-📊 Data Product
-├── 🏢 Domain (Business Area)
-├── 👥 Ownership & Stewardship
-├── 🔧 Technical Implementation
-├── 📈 Quality & SLA Metrics
-├── 🔒 Security & Compliance
-└── 📋 Documentation & Schema
-```
-
----
-
-## Data Product Attributes
-
-### 1. Basic Information
-Every data product must have:
-
-| Attribute | Description | Example |
-|-----------|-------------|---------|
-| **Product Name** | Clear, descriptive name | "Daily Trade Blotter" |
-| **Description** | What this product provides | "All executed trades with settlement details" |
-| **Domain** | Business area | Trading, Risk, Portfolio, Market Data |
-| **Business Purpose** | Why this data exists | Trade reporting, risk management, compliance |
-
-### 2. Ownership & Governance
-
-| Role | Responsibility | Example |
-|------|----------------|---------|
-| **Data Owner** | Accountable for data quality and business rules | Head of Trading |
-| **Business Owner** | Defines requirements and usage policies | Trading Desk Manager |
-| **Technical Contact** | Handles implementation and technical issues | trading-tech@fund.com |
-| **Data Steward** | Day-to-day quality monitoring and access | Senior Trader |
-
-### 3. Technical Implementation
-
-| Attribute | Description | Example |
-|-----------|-------------|---------|
-| **Data Source** | Where data originates | Prime Broker Feeds, OMS |
-| **Storage Location** | Physical/logical location | s3://fund-data/trading/trades/ |
-| **Data Format** | File format or structure | Parquet, JSON, CSV |
-| **Update Frequency** | How often data refreshes | Real-time, Daily, Weekly |
-| **Access Method** | How to consume data | API, File share, Database |
-
-### 4. Quality & Performance
-
-| Metric | Description | Target |
-|--------|-------------|--------|
-| **Data Quality Score** | Overall quality rating (0-100) | >95% |
-| **Freshness SLA** | How current data must be | T+0 by 6:00 PM |
-| **Availability SLA** | Uptime commitment | 99.9% |
-| **Completeness** | Percentage of expected records | >99% |
-
-### 5. Security & Compliance
-
-| Attribute | Values | Description |
-|-----------|--------|-------------|
-| **Sensitivity Level** | Public, Internal, Confidential, Restricted | Data classification |
-| **PII Flag** | Yes/No | Contains personal information |
-| **Retention Period** | Duration | How long to keep data |
-| **Access Controls** | Read/Write permissions | Who can access |
-
-### 6. Lifecycle Management
-
-| Status | Description | Actions Allowed |
-|--------|-------------|-----------------|
-| **Draft** | Under development | Edit, Test |
-| **Active** | Production ready | Consume, Monitor |
-| **Deprecated** | Being phased out | Read-only |
-| **Retired** | No longer available | Archive only |
-
----
-
-## Data Domains
-
-### Trading Domain
-**Purpose**: Manages all trade execution and settlement activities
-
-**Key Data Products**:
-- **Trade Blotter**: Real-time executed trades
-- **Order Book**: Active and historical orders  
-- **Settlement Instructions**: Trade settlement details
-- **Broker Allocations**: Trade allocation across brokers
-
-**Typical Consumers**: Trading desks, Operations, Compliance, Risk
-
-### Risk Domain  
-**Purpose**: Risk measurement, monitoring, and reporting
-
-**Key Data Products**:
-- **Daily VaR**: Value at Risk calculations
-- **Position Risk**: Portfolio risk exposures
-- **Stress Test Results**: Scenario analysis outputs
-- **Risk Limits**: Current vs. limit monitoring
-
-**Typical Consumers**: Risk managers, Portfolio managers, Senior management
-
-### Portfolio Domain
-**Purpose**: Portfolio construction, performance, and attribution
-
-**Key Data Products**:
-- **Position Snapshots**: End-of-day holdings
-- **Performance Attribution**: Return breakdown analysis  
-- **Benchmark Data**: Index and benchmark information
-- **Asset Allocation**: Strategic and tactical allocation
-
-**Typical Consumers**: Portfolio managers, Clients, Performance team
-
-### Market Data Domain
-**Purpose**: Market information for pricing and analysis
-
-**Key Data Products**:
-- **Real-time Prices**: Live market data
-- **End-of-Day Prices**: Official closing prices
-- **Historical Data**: Time series data for analysis
-- **Reference Data**: Instrument master data
-
-**Typical Consumers**: All domains, Trading systems, Analytics
-
----
-
-## Example Data Products
-
-### 1. Daily Trade Blotter
-
-**Basic Information**:
-- **Name**: Daily Trade Blotter
-- **Description**: Complete record of all executed trades with counterparty and settlement details
-- **Domain**: Trading
-- **Purpose**: Trade reporting, P&L calculation, settlement processing
-
-**Ownership**:
-- **Data Owner**: Head of Trading
-- **Business Owner**: Trading Desk Manager  
-- **Technical Contact**: trading-tech@fund.com
-- **Data Steward**: Senior Trader
-
-**Technical Details**:
-- **Source**: Prime Broker Feeds + Order Management System
-- **Location**: s3://fund-data/trading/trades/daily/
-- **Format**: Parquet files, partitioned by date
-- **Update**: Real-time (5 minute delay)
-- **Access**: REST API, S3 direct access
-
-**Quality & SLA**:
-- **Quality Score**: 98.5%
-- **Freshness**: T+0 by 6:00 PM
-- **Availability**: 99.9%
-- **Completeness**: >99.8%
-
-**Security**:
-- **Sensitivity**: Confidential
-- **PII**: No
-- **Retention**: 7 years
-- **Access**: Trading team (read/write), Others (read-only with approval)
-
-### 2. End of Day Positions
-
-**Basic Information**:
-- **Name**: End of Day Positions  
-- **Description**: Daily position snapshots by account, strategy, and instrument
-- **Domain**: Portfolio
-- **Purpose**: Risk management, performance attribution, regulatory reporting
-
-**Ownership**:
-- **Data Owner**: Head of Portfolio Management
-- **Business Owner**: Portfolio Managers
-- **Technical Contact**: portfolio-tech@fund.com
-- **Data Steward**: Portfolio Operations
-
-**Technical Details**:
-- **Source**: Trade Blotter + Corporate Actions + Cash Management
-- **Location**: s3://fund-data/portfolio/positions/eod/
-- **Format**: Parquet files with Delta Lake
-- **Update**: Daily by 7:00 PM
-- **Access**: BI Dashboard, API, Direct query
-
-**Quality & SLA**:
-- **Quality Score**: 99.2%
-- **Freshness**: T+0 by 7:00 PM
-- **Availability**: 99.9%
-- **Completeness**: 100%
-
-**Security**:
-- **Sensitivity**: Confidential
-- **PII**: No
-- **Retention**: 10 years (regulatory requirement)
-- **Access**: Portfolio team (full), Risk team (read), Compliance (read)
-
----
-
-## Data Lineage Examples
-
-### Trade Processing Flow
-```
-Raw Broker Feeds 
-    ↓ (ETL: Trade Standardization)
-Normalized Trade Blotter
-    ↓ (Aggregation: Daily Position Calc)
-End of Day Positions
-    ↓ (Analysis: Performance Attribution)
-Daily P&L Reports
-```
-
-### Risk Calculation Flow
-```
-End of Day Positions + Market Data
-    ↓ (Risk Engine: VaR Calculation)
-Daily Risk Metrics
-    ↓ (Reporting: Risk Dashboard)
-Risk Management Reports
-```
-
-### NAV Calculation Flow
-```
-Positions + Market Prices + Cash + Accruals
-    ↓ (NAV Engine: Fund Accounting)
-Daily NAV
-    ↓ (Distribution: Client Reporting)
-Investor Statements
+Data Product Catalog Entry
+├── Product Identity
+│   ├── Data Product Name
+│   └── Product ID/Code
+├── Ownership & Responsibility  
+│   ├── Data Owner
+│   ├── Business Contact
+│   └── Technical Contact
+├── Source & Technical Details
+│   ├── Data Source Systems
+│   ├── Interface Type (API/File/Database)
+│   ├── Data Format
+│   └── Storage Location
+├── Business Context
+│   ├── Description
+│   ├── Business Use Case
+│   └── Consumer Applications
+├── Security & Compliance
+│   ├── Classification Level
+│   ├── Access Controls
+│   ├── PII Flag
+│   └── Retention Requirements
+├── Service Level & Quality
+│   ├── Update Frequency
+│   ├── Availability SLA
+│   ├── Quality Score
+│   └── Freshness Requirements
+└── Documentation
+    ├── Schema Documentation
+    └── Usage Guidelines
 ```
 
 ---
 
-## Quality Framework
+## Data Fields (Matching Your Columns)
 
-### Quality Dimensions
+### Column 1: Data Product
+- **Product Name**: Business-friendly name
+- **Product Code**: Technical identifier
+- **Domain**: Business area (Trading, Risk, etc.)
 
-**Completeness**
-- All expected records are present
-- No missing mandatory fields
-- Target: >99%
+### Column 2: Data Owner
+- **Business Owner**: Accountable for data
+- **Technical Owner**: Handles implementation
+- **Data Steward**: Day-to-day management
 
-**Accuracy** 
-- Data values are correct
-- Cross-system reconciliation passes
-- Target: >99.5%
+### Column 3: Data Source
+- **Source System**: Where data originates
+- **Source Type**: Internal/External/Vendor
+- **Refresh Method**: Real-time/Batch/Manual
 
-**Timeliness**
-- Data arrives within SLA windows
-- Processing completes on schedule  
-- Target: 100% SLA compliance
+### Column 4: Description & Use Case  
+- **Description**: What the data contains
+- **Business Purpose**: Why it exists
+- **Use Cases**: How it's used
+- **Consumer Systems**: Who uses it
 
-**Consistency**
-- Data aligns across systems
-- No contradictory information
-- Target: Zero critical exceptions
+### Column 5: Interface/Technical
+- **Access Method**: API/File/Database/Dashboard
+- **Data Format**: JSON/CSV/Parquet/XML
+- **Connection Details**: Endpoints/Paths
+- **Authentication**: Required credentials
 
-### Quality Monitoring
+### Column 6: Compliance & Security
+- **Classification**: Public/Internal/Confidential
+- **Regulatory Requirements**: SOX/GDPR/etc.
+- **Data Residency**: Geographic restrictions
+- **Encryption**: At rest/in transit
 
-**Daily Checks**:
-- Record count validation
-- Field completeness verification
-- Business rule validation
-- Cross-reference verification
+### Column 7: Access Control
+- **Read Access**: Who can view
+- **Write Access**: Who can modify  
+- **Approval Required**: For access requests
+- **Access Review**: Frequency of review
 
-**Weekly Reviews**:
-- Quality trend analysis
-- SLA performance review
-- Exception analysis
-- Stakeholder feedback
+### Column 8: SLA & Performance
+- **Availability Target**: Uptime percentage
+- **Response Time**: Query performance
+- **Freshness SLA**: How current data must be
+- **Scheduled Maintenance**: Downtime windows
 
-**Monthly Assessments**:
-- Overall quality scoring
-- Process improvement recommendations
-- Consumer satisfaction survey
-- Governance review
-
----
-
-## Access Control Framework
-
-### Sensitivity Levels
-
-**Public**
-- No access restrictions
-- Can be shared externally
-- Examples: Market indices, Public company data
-
-**Internal**  
-- Internal use only
-- Standard employee access
-- Examples: Internal research, General market data
-
-**Confidential**
-- Business sensitive information
-- Need-to-know basis
-- Examples: Positions, Trading data, Performance
-
-**Restricted**
-- Highly sensitive
-- Executive/specialized access only  
-- Examples: Strategic plans, Regulatory investigations
-
-### Access Types
-
-**Read**
-- View data
-- Export for analysis
-- Standard business use
-
-**Write**
-- Modify data values
-- Update metadata
-- Data steward functions
-
-**Admin**
-- Manage access controls
-- Configure data pipelines
-- System administration
-
-### Access Request Process
-
-1. **Request**: Submit access request with business justification
-2. **Review**: Data owner reviews and approves/denies
-3. **Provision**: Technical team grants access
-4. **Monitor**: Regular access reviews and audits
+### Column 9: Quality Metrics
+- **Quality Score**: Overall rating (0-100)
+- **Completeness**: Percentage of records
+- **Accuracy**: Error rate
+- **Timeliness**: Delivery performance
 
 ---
 
-## Implementation Guidelines
+## Example Entries (Based on Typical Hedge Fund Data)
 
-### Getting Started
+### Example 1: Trade Data
+```
+Data Product: Daily Trade Blotter
+Data Owner: Head of Trading
+Data Source: Prime Broker Feeds + OMS
+Description: All executed trades with settlement details
+Interface: REST API + S3 Files  
+Compliance: Confidential, SOX Compliant
+Access Control: Trading Team (RW), Others (R with approval)
+SLA: 99.9% availability, T+0 by 6:00 PM
+Quality: 98.5% completeness, 99.2% accuracy
+```
 
-1. **Identify Data Products**: Start with critical business data
-2. **Assign Ownership**: Designate clear owners and stewards  
-3. **Document Metadata**: Capture all required attributes
-4. **Establish Quality**: Define and measure quality metrics
-5. **Control Access**: Implement appropriate security controls
+### Example 2: Position Data  
+```
+Data Product: End of Day Positions
+Data Owner: Portfolio Management
+Data Source: Trade Blotter + Corporate Actions
+Description: Daily portfolio holdings by account/strategy
+Interface: BI Dashboard + API
+Compliance: Confidential, Regulatory Reporting
+Access Control: PM Team (RW), Risk (R), Compliance (R)  
+SLA: 99.9% availability, Daily by 7:00 PM
+Quality: 99.8% completeness, 100% accuracy
+```
 
-### Best Practices
+### Example 3: Market Data
+```
+Data Product: Real-time Market Prices
+Data Owner: Technology/Market Data
+Data Source: Bloomberg + Refinitiv
+Description: Live and EOD prices for all instruments
+Interface: Market Data API + Files
+Compliance: Internal Use, Vendor Agreements
+Access Control: All users (R), Market Data Team (Admin)
+SLA: 99.95% availability, <30 second latency
+Quality: 99.9% completeness, 99.8% accuracy
+```
 
-**Naming Conventions**:
-- Use clear, descriptive names
-- Avoid technical jargon
-- Be consistent across similar products
+---
 
-**Documentation**:
-- Keep descriptions current
-- Include business context
-- Provide usage examples
+## Simplified Data Model Structure
 
-**Quality Management**:
-- Define measurable quality metrics
-- Implement automated monitoring
-- Act on quality issues promptly
+### Main Table: data_products
+```
+- product_id (Primary Key)
+- product_name
+- data_owner
+- data_source  
+- description
+- business_use_case
+- interface_type
+- data_format
+- classification_level
+- access_control
+- availability_sla
+- quality_score
+- created_date
+- last_updated
+```
 
-**Governance**:
-- Regular metadata reviews
-- Clear escalation procedures
-- Stakeholder communication
+### Supporting Tables (Optional)
 
+#### access_permissions
+```
+- product_id (Foreign Key)
+- user_group
+- permission_level (Read/Write/Admin)
+- granted_date
+- expires_date
+```
 
-This model provides a comprehensive framework for managing data products in a scalable, governed manner while maintaining the practical approach of your original spreadsheet.
+#### quality_metrics  
+```
+- product_id (Foreign Key)
+- metric_type (Completeness/Accuracy/Timeliness)
+- metric_value
+- measurement_date
+- status (Pass/Fail/Warning)
+```
 
+---
+
+## Key Benefits of This Structure
+
+### 1. Matches Your Current Process
+- Replicates your Excel column structure
+- Uses familiar terminology
+- Maintains existing workflows
+
+### 2. Simple and Practical
+- Easy to understand and populate
+- Minimal complexity
+- Quick to implement
+
+### 3. Governance Ready
+- Clear ownership model
+- Security classification
+- Quality tracking
+- Access controls
+
+### 4. Scalable Foundation
+- Can add fields as needed
+- Supports additional relationships
+- Ready for automation
+
+---
+
+## Implementation Approach
+
+### Phase 1: Basic Catalog
+1. Create main data product table
+2. Migrate existing spreadsheet data
+3. Establish data entry process
+4. Train data owners
+
+### Phase 2: Enhanced Features  
+1. Add quality metrics tracking
+2. Implement access control system
+3. Create automated reporting
+4. Build search and discovery
+
+### Phase 3: Advanced Capabilities
+1. Add data lineage tracking
+2. Implement quality monitoring
+3. Create self-service portal
+4. Integrate with other systems
+
+---
+
+## Quick Start Template
+
+For each data product, capture:
+
+```
+Basic Information:
+- Name: [Product Name]
+- Owner: [Business Owner]
+- Source: [Source System]
+
+Description:
+- What: [What data this contains]
+- Why: [Business purpose]
+- Who: [Primary consumers]
+
+Technical:
+- Access: [How to access - API/File/etc.]
+- Format: [Data format]
+- Frequency: [Update schedule]
+
+Governance:
+- Classification: [Public/Internal/Confidential]
+- Quality: [Quality score/metrics]
+- SLA: [Availability and freshness requirements]

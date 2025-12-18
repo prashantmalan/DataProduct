@@ -1,7 +1,7 @@
 # Data Product Catalog Wiki
 
 ## Overview
-This  documents the structure and governance model for our data product catalog, based on proven spreadsheet practices and industry best practices.
+This document describes the structure and governance model for the data product catalog, based on proven industry best practices.
 
 ---
 
@@ -375,3 +375,4 @@ Investor Statements
 
 
 This model provides a comprehensive framework for managing data products in a scalable, governed manner while maintaining the practical approach of your original spreadsheet.
+
